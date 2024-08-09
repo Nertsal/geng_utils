@@ -9,13 +9,13 @@ use super::position::PositionTorus;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CameraTorus<T: Float> {
     pub center: PositionTorus<T>,
-    pub fov: T,
+    pub fov: Camera2dFov,
     pub rotation: Angle<T>,
 }
 
 impl<T: Float> CameraTorus<T> {
     /// Construct a new camera on a torus with the given size.
-    pub fn new(fov: T, world_size: vec2<T>) -> Self {
+    pub fn new(fov: Camera2dFov, world_size: vec2<T>) -> Self {
         Self {
             center: PositionTorus::zero(world_size),
             fov,
@@ -27,7 +27,7 @@ impl<T: Float> CameraTorus<T> {
         geng::Camera2d {
             center: self.center.to_world().map(T::as_f32),
             rotation: Angle::ZERO,
-            fov: self.fov.as_f32(),
+            fov: self.fov,
         }
     }
 

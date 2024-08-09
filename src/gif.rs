@@ -27,7 +27,8 @@ pub async fn load_gif(
     let data = <Vec<u8> as geng::asset::Load>::load(manager, path, &())
         .await
         .context("when loading gif bytes")?;
-    let gif = image::codecs::gif::GifDecoder::new(data.as_slice()).context("when decoding gif")?;
+    let input = std::io::Cursor::new(data.as_slice());
+    let gif = image::codecs::gif::GifDecoder::new(input).context("when decoding gif")?;
     let frames = gif
         .into_frames()
         .map(|frame| {
